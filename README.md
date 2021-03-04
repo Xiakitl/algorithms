@@ -20,6 +20,7 @@ This repo is only for my private purpose and is a continuous work in progress. B
 
 ## Maximum Subarray
 * Divide and conquer O(n log n)
+* Kadane's algorithm O(n)
 
 # The Book
 CORMEN, Thomas H., et al. Introduction to algorithms. MIT press, 2009.  
