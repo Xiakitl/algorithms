@@ -1,5 +1,6 @@
 package algorithms.maxsubarray
 
+import algorithms.maxsubarray.MaximumSubarrayAlgorithm.Result
 import java.util.function.BinaryOperator
 
 /**
@@ -8,9 +9,10 @@ import java.util.function.BinaryOperator
  *
  * (p.68ff)
  */
-class DivideAndConquerMaximumSubarrayAlgorithm<T: Comparable<T>>(private val sumFunction: BinaryOperator<T>) {
+class DivideAndConquerMaximumSubarrayAlgorithm<T: Comparable<T>>(private val sumFunction: BinaryOperator<T>) :
+    MaximumSubarrayAlgorithm<T> {
 
-    fun findMaximumSubarrayIn(array: Array<T>): Result {
+    override fun findMaximumSubarrayIn(array: Array<T>): Result<T> {
         if (array.isEmpty()) {
             throw IllegalArgumentException("Array must contain at least one element")
         }
@@ -18,7 +20,7 @@ class DivideAndConquerMaximumSubarrayAlgorithm<T: Comparable<T>>(private val sum
         return findMaximumSubarray(array, 0, array.size-1)
     }
 
-    private fun findMaximumSubarray(array: Array<T>, low: Int, high: Int): Result {
+    private fun findMaximumSubarray(array: Array<T>, low: Int, high: Int): Result<T> {
         if (high == low) {
             return Result(low, high, array[low])
         }
@@ -31,7 +33,7 @@ class DivideAndConquerMaximumSubarrayAlgorithm<T: Comparable<T>>(private val sum
         return maxOf(leftResult, rightResult, crossResult)
     }
 
-    private fun findMaximumCrossingSubarray(array: Array<T>, low: Int, mid: Int, high: Int): Result {
+    private fun findMaximumCrossingSubarray(array: Array<T>, low: Int, mid: Int, high: Int): Result<T> {
         var maxLeftSum: T? = null
         var maxLeftIdx = 0
 
@@ -59,21 +61,6 @@ class DivideAndConquerMaximumSubarrayAlgorithm<T: Comparable<T>>(private val sum
         }
 
         return Result(maxLeftIdx, maxRightIdx, maxLeftSum!! + maxRightSum!!)
-    }
-
-    inner class Result(val inclStartIdx: Int, val inclEndIdx: Int, val sum: T) : Comparable<Result> {
-        override fun compareTo(other: Result) = sum.compareTo(other.sum)
-        override fun equals(other: Any?): Boolean {
-            return other is DivideAndConquerMaximumSubarrayAlgorithm<*>.Result && inclStartIdx == other.inclStartIdx && inclEndIdx == other.inclEndIdx && sum == other.sum
-        }
-        override fun toString() = "[$inclStartIdx,$inclEndIdx]=$sum"
-
-        override fun hashCode(): Int {
-            var result = inclStartIdx
-            result = 31 * result + inclEndIdx
-            result = 31 * result + sum.hashCode()
-            return result
-        }
     }
 
     private operator fun T.plus(t: T): T {
