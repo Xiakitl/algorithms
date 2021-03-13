@@ -22,6 +22,9 @@ This repo is only for my private purpose and is a continuous work in progress. B
 * Divide and conquer O(n log n)
 * Kadane's algorithm O(n)
 
+## Square Matrix Multiplication
+* Simple algorithm O(n³)
+
 # The Book
 CORMEN, Thomas H., et al. Introduction to algorithms. MIT press, 2009.  
 ISBN: 978-0-262-03384-8
