@@ -26,14 +26,14 @@ internal abstract class SquareMatrixMultiplyAlgorithmTest {
 
             @Test
             fun shouldReturnMultiplicationResult() {
-                val firstMatrix = SquareMatrix.of(5,8,3,8)
-                val secondMatrix = SquareMatrix.of(3,8,8,9)
+                val firstMatrix = Matrix.ofRows(Matrix.Row.of(5,8), Matrix.Row.of(3,8))
+                val secondMatrix = Matrix.ofRows(Matrix.Row.of(3,8), Matrix.Row.of(8,9))
 
                 val result = algorithm.multiply(firstMatrix, secondMatrix)
 
                 println(result.toString())
 
-                val expectedResult = SquareMatrix.of(79,112,73,96)
+                val expectedResult = Matrix.ofRows(Matrix.Row.of(79,112), Matrix.Row.of(73,96))
                 assertEquals(expectedResult, result)
             }
         }

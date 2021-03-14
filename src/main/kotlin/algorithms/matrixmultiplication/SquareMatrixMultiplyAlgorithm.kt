@@ -1,5 +1,5 @@
 package algorithms.matrixmultiplication
 
 interface SquareMatrixMultiplyAlgorithm<T> {
-    fun multiply(a: SquareMatrix<T>, b: SquareMatrix<T>) : SquareMatrix<T>
+    fun multiply(a: Matrix<T>, b: Matrix<T>) : Matrix<T>
 }
