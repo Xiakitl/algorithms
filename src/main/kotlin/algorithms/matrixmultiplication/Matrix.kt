@@ -26,17 +26,70 @@ class Matrix<T> private constructor(rows: List<Row<T>>) {
 
     operator fun get(idx: Int) = rows[idx]
 
-    fun withAdditionalRows(rows: List<Row<T>>): Matrix<T> {
-        val newRows = ArrayList<Row<T>>(this.rows.size + rows.size)
-        newRows.addAll(this.rows)
-        newRows.addAll(rows)
-        return Matrix(newRows)
+    fun withAppendedRows(matrix: Matrix<T>): Matrix<T> {
+        if (width != matrix.width) {
+            throw IllegalArgumentException("Matrices are not of same width")
+        }
+        if (size == 0) {
+            throw IllegalStateException("Matrix is empty")
+        }
+
+        val result = withSize(this.width, this.height+ matrix.height, this[0][0])
+        for (rowIdx in rows.indices) {
+            for (columnIdx in rows[rowIdx].indices) {
+                result[rowIdx][columnIdx] = this[rowIdx][columnIdx]
+            }
+        }
+        for (secondMatrixRowIdx in 0 until matrix.height) {
+            for (columnIdx in rows[secondMatrixRowIdx].indices) {
+                result[height + secondMatrixRowIdx][columnIdx] = matrix[secondMatrixRowIdx][columnIdx]
+            }
+        }
+        return result
+    }
+
+    fun withAppendedColumns(matrix: Matrix<T>): Matrix<T> {
+        if (height != matrix.height) {
+            throw IllegalArgumentException("Matrices are not of same height")
+        }
+        if (size == 0) {
+            throw IllegalStateException("Matrix is empty")
+        }
+
+        val result = withSize(this.width + matrix.width, this.height, this[0][0])
+        for (rowIdx in rows.indices) {
+            for (columnIdx in rows[rowIdx].indices) {
+                result[rowIdx][columnIdx] = this[rowIdx][columnIdx]
+            }
+            for (secondMatrixColumnIdx in 0 until matrix.width) {
+                result[rowIdx][width + secondMatrixColumnIdx] = matrix[rowIdx][secondMatrixColumnIdx]
+            }
+        }
+        return result
+    }
+
+
+    fun combineWith(other: Matrix<T>, combinationFunction: (T, T) -> T): Matrix<T> {
+        if (width != other.width || height != other.height) {
+            throw IllegalArgumentException("Matrices are not of same size")
+        }
+        if (width == 0) {
+            return this
+        }
+
+        val result = withSize(width, height, this[0][0]) // fill result with dummy value; will be overridden in following loop
+        for (rowIdx in rows.indices) {
+            for (columnIdx in rows[rowIdx].indices) {
+                result[rowIdx][columnIdx] = combinationFunction(this[rowIdx][columnIdx], other[rowIdx][columnIdx])
+            }
+        }
+        return result
     }
 
     fun subMatrix(firstColumn: Int, lastColumn: Int, firstRow: Int, lastRow: Int): Matrix<T> {
         val newRows = mutableListOf<Row<T>>()
         for (idx in firstRow .. lastRow) {
-            newRows.add(newRows[idx].subRow(firstColumn, lastColumn))
+            newRows.add(this[idx].subRow(firstColumn, lastColumn))
         }
         return Matrix(newRows)
     }
