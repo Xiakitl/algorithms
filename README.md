@@ -25,6 +25,7 @@ This repo is only for my private purpose and is a continuous work in progress. B
 ## Square Matrix Multiplication
 * Simple algorithm O(n³)
 * Divide and conquer O(n³)
+* Strassen's algorithm O(n^(log 7))
 
 # The Book
 CORMEN, Thomas H., et al. Introduction to algorithms. MIT press, 2009.  
